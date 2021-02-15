@@ -1,0 +1,324 @@
+Grammar
+
+    0 $accept: start $end
+
+    1 start: expr NEWLINE
+
+    2 expr: expr '+' expr
+    3     | expr '-' expr
+    4     | expr '*' expr
+    5     | expr '/' expr
+    6     | expr '^' expr
+    7     | '(' expr ')'
+    8     | FLOAT
+    9     | '-' expr
+   10     | '+' expr
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 7
+')' (41) 7
+'*' (42) 4
+'+' (43) 2 10
+'-' (45) 3 9
+'/' (47) 5
+'^' (94) 6
+error (256)
+FLOAT (258) 8
+NEWLINE (259) 1
+
+
+Nonterminals, with rules where they appear
+
+$accept (12)
+    on left: 0
+start (13)
+    on left: 1, on right: 0
+expr (14)
+    on left: 2 3 4 5 6 7 8 9 10, on right: 1 2 3 4 5 6 7 9 10
+
+
+state 0
+
+    0 $accept: . start $end
+
+    FLOAT  shift, and go to state 1
+    '+'    shift, and go to state 2
+    '-'    shift, and go to state 3
+    '('    shift, and go to state 4
+
+    start  go to state 5
+    expr   go to state 6
+
+
+state 1
+
+    8 expr: FLOAT .
+
+    $default  reduce using rule 8 (expr)
+
+
+state 2
+
+   10 expr: '+' . expr
+
+    FLOAT  shift, and go to state 1
+    '+'    shift, and go to state 2
+    '-'    shift, and go to state 3
+    '('    shift, and go to state 4
+
+    expr  go to state 7
+
+
+state 3
+
+    9 expr: '-' . expr
+
+    FLOAT  shift, and go to state 1
+    '+'    shift, and go to state 2
+    '-'    shift, and go to state 3
+    '('    shift, and go to state 4
+
+    expr  go to state 8
+
+
+state 4
+
+    7 expr: '(' . expr ')'
+
+    FLOAT  shift, and go to state 1
+    '+'    shift, and go to state 2
+    '-'    shift, and go to state 3
+    '('    shift, and go to state 4
+
+    expr  go to state 9
+
+
+state 5
+
+    0 $accept: start . $end
+
+    $end  shift, and go to state 10
+
+
+state 6
+
+    1 start: expr . NEWLINE
+    2 expr: expr . '+' expr
+    3     | expr . '-' expr
+    4     | expr . '*' expr
+    5     | expr . '/' expr
+    6     | expr . '^' expr
+
+    NEWLINE  shift, and go to state 11
+    '+'      shift, and go to state 12
+    '-'      shift, and go to state 13
+    '*'      shift, and go to state 14
+    '/'      shift, and go to state 15
+    '^'      shift, and go to state 16
+
+
+state 7
+
+    2 expr: expr . '+' expr
+    3     | expr . '-' expr
+    4     | expr . '*' expr
+    5     | expr . '/' expr
+    6     | expr . '^' expr
+   10     | '+' expr .
+
+    '*'  shift, and go to state 14
+    '/'  shift, and go to state 15
+    '^'  shift, and go to state 16
+
+    $default  reduce using rule 10 (expr)
+
+
+state 8
+
+    2 expr: expr . '+' expr
+    3     | expr . '-' expr
+    4     | expr . '*' expr
+    5     | expr . '/' expr
+    6     | expr . '^' expr
+    9     | '-' expr .
+
+    '*'  shift, and go to state 14
+    '/'  shift, and go to state 15
+    '^'  shift, and go to state 16
+
+    $default  reduce using rule 9 (expr)
+
+
+state 9
+
+    2 expr: expr . '+' expr
+    3     | expr . '-' expr
+    4     | expr . '*' expr
+    5     | expr . '/' expr
+    6     | expr . '^' expr
+    7     | '(' expr . ')'
+
+    '+'  shift, and go to state 12
+    '-'  shift, and go to state 13
+    '*'  shift, and go to state 14
+    '/'  shift, and go to state 15
+    '^'  shift, and go to state 16
+    ')'  shift, and go to state 17
+
+
+state 10
+
+    0 $accept: start $end .
+
+    $default  accept
+
+
+state 11
+
+    1 start: expr NEWLINE .
+
+    $default  reduce using rule 1 (start)
+
+
+state 12
+
+    2 expr: expr '+' . expr
+
+    FLOAT  shift, and go to state 1
+    '+'    shift, and go to state 2
+    '-'    shift, and go to state 3
+    '('    shift, and go to state 4
+
+    expr  go to state 18
+
+
+state 13
+
+    3 expr: expr '-' . expr
+
+    FLOAT  shift, and go to state 1
+    '+'    shift, and go to state 2
+    '-'    shift, and go to state 3
+    '('    shift, and go to state 4
+
+    expr  go to state 19
+
+
+state 14
+
+    4 expr: expr '*' . expr
+
+    FLOAT  shift, and go to state 1
+    '+'    shift, and go to state 2
+    '-'    shift, and go to state 3
+    '('    shift, and go to state 4
+
+    expr  go to state 20
+
+
+state 15
+
+    5 expr: expr '/' . expr
+
+    FLOAT  shift, and go to state 1
+    '+'    shift, and go to state 2
+    '-'    shift, and go to state 3
+    '('    shift, and go to state 4
+
+    expr  go to state 21
+
+
+state 16
+
+    6 expr: expr '^' . expr
+
+    FLOAT  shift, and go to state 1
+    '+'    shift, and go to state 2
+    '-'    shift, and go to state 3
+    '('    shift, and go to state 4
+
+    expr  go to state 22
+
+
+state 17
+
+    7 expr: '(' expr ')' .
+
+    $default  reduce using rule 7 (expr)
+
+
+state 18
+
+    2 expr: expr . '+' expr
+    2     | expr '+' expr .
+    3     | expr . '-' expr
+    4     | expr . '*' expr
+    5     | expr . '/' expr
+    6     | expr . '^' expr
+
+    '*'  shift, and go to state 14
+    '/'  shift, and go to state 15
+    '^'  shift, and go to state 16
+
+    $default  reduce using rule 2 (expr)
+
+
+state 19
+
+    2 expr: expr . '+' expr
+    3     | expr . '-' expr
+    3     | expr '-' expr .
+    4     | expr . '*' expr
+    5     | expr . '/' expr
+    6     | expr . '^' expr
+
+    '*'  shift, and go to state 14
+    '/'  shift, and go to state 15
+    '^'  shift, and go to state 16
+
+    $default  reduce using rule 3 (expr)
+
+
+state 20
+
+    2 expr: expr . '+' expr
+    3     | expr . '-' expr
+    4     | expr . '*' expr
+    4     | expr '*' expr .
+    5     | expr . '/' expr
+    6     | expr . '^' expr
+
+    '^'  shift, and go to state 16
+
+    $default  reduce using rule 4 (expr)
+
+
+state 21
+
+    2 expr: expr . '+' expr
+    3     | expr . '-' expr
+    4     | expr . '*' expr
+    5     | expr . '/' expr
+    5     | expr '/' expr .
+    6     | expr . '^' expr
+
+    '^'  shift, and go to state 16
+
+    $default  reduce using rule 5 (expr)
+
+
+state 22
+
+    2 expr: expr . '+' expr
+    3     | expr . '-' expr
+    4     | expr . '*' expr
+    5     | expr . '/' expr
+    6     | expr . '^' expr
+    6     | expr '^' expr .
+
+    '^'  shift, and go to state 16
+
+    $default  reduce using rule 6 (expr)
