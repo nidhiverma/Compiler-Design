@@ -1,0 +1,127 @@
+Grammar
+
+    0 $accept: START $end
+
+    1 START: A A A A A S B NEWLINE
+
+    2 S: A S
+    3  | A
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+A (258) 1 2 3
+B (259) 1
+NEWLINE (260) 1
+
+
+Nonterminals, with rules where they appear
+
+$accept (6)
+    on left: 0
+START (7)
+    on left: 1, on right: 0
+S (8)
+    on left: 2 3, on right: 1 2
+
+
+state 0
+
+    0 $accept: . START $end
+
+    A  shift, and go to state 1
+
+    START  go to state 2
+
+
+state 1
+
+    1 START: A . A A A A S B NEWLINE
+
+    A  shift, and go to state 3
+
+
+state 2
+
+    0 $accept: START . $end
+
+    $end  shift, and go to state 4
+
+
+state 3
+
+    1 START: A A . A A A S B NEWLINE
+
+    A  shift, and go to state 5
+
+
+state 4
+
+    0 $accept: START $end .
+
+    $default  accept
+
+
+state 5
+
+    1 START: A A A . A A S B NEWLINE
+
+    A  shift, and go to state 6
+
+
+state 6
+
+    1 START: A A A A . A S B NEWLINE
+
+    A  shift, and go to state 7
+
+
+state 7
+
+    1 START: A A A A A . S B NEWLINE
+
+    A  shift, and go to state 8
+
+    S  go to state 9
+
+
+state 8
+
+    2 S: A . S
+    3  | A .
+
+    A  shift, and go to state 8
+
+    $default  reduce using rule 3 (S)
+
+    S  go to state 10
+
+
+state 9
+
+    1 START: A A A A A S . B NEWLINE
+
+    B  shift, and go to state 11
+
+
+state 10
+
+    2 S: A S .
+
+    $default  reduce using rule 2 (S)
+
+
+state 11
+
+    1 START: A A A A A S B . NEWLINE
+
+    NEWLINE  shift, and go to state 12
+
+
+state 12
+
+    1 START: A A A A A S B NEWLINE .
+
+    $default  reduce using rule 1 (START)
